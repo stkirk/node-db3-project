@@ -122,6 +122,10 @@ async function findById(scheme_id) {
   return scheme;
 }
 
+function findUnformattedSchemeById(scheme_id) {
+  return db("schemes").where("scheme_id", scheme_id).first();
+}
+
 function findSteps(scheme_id) {
   // EXERCISE C
   /*
@@ -168,4 +172,5 @@ module.exports = {
   findSteps,
   add,
   addStep,
+  findUnformattedSchemeById,
 };

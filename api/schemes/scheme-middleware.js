@@ -1,3 +1,5 @@
+const Schemes = require("./scheme-model");
+
 /*
   If `scheme_id` does not exist in the database:
 
@@ -7,7 +9,20 @@
   }
 */
 const checkSchemeId = (req, res, next) => {
-  next();
+  const { scheme_id } = req.params;
+  // console.log("scheme id --->", scheme_id);
+  Schemes.findUnformattedSchemeById(scheme_id)
+    .then((scheme) => {
+      // console.log("SCHEME --> ", scheme);
+      if (!scheme) {
+        res
+          .status(404)
+          .json({ message: `scheme with scheme_id ${scheme_id} not found` });
+      } else {
+        next();
+      }
+    })
+    .catch(next);
 };
 
 /*
