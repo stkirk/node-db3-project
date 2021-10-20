@@ -33,8 +33,19 @@ const checkSchemeId = (req, res, next) => {
     "message": "invalid scheme_name"
   }
 */
-const validateScheme = (req, res, next) => {
-  next();
+const validateScheme = async (req, res, next) => {
+  const { scheme_name } = req.body;
+  const allSchemes = await Schemes.find();
+  const duplicateScheme = allSchemes.filter(
+    (scheme) => scheme.scheme_name === scheme_name
+  );
+  if (!scheme_name) {
+    res.status(400).json({ message: "invalid scheme_name" });
+  } else if (typeof scheme_name !== "string") {
+    res.status(400).json({ message: "invalid scheme_name" });
+  } else if (duplicateScheme[0]) {
+    res.status(400).json({ message: "invalid scheme_name" });
+  } else next();
 };
 
 /*
