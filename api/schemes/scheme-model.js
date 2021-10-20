@@ -174,12 +174,12 @@ async function add(scheme) {
     including the newly created one.
   */
 async function addStep(scheme_id, step) {
-  const [step_id] = await db("steps").insert({
+  await db("steps").insert({
     scheme_id,
     step_number: step.step_number,
     instructions: step.instructions,
   });
-  const steps = findSteps(scheme_id);
+  const steps = await findSteps(scheme_id);
   return steps;
 }
 
