@@ -126,9 +126,8 @@ function findUnformattedSchemeById(scheme_id) {
   return db("schemes").where("scheme_id", scheme_id).first();
 }
 
-function findSteps(scheme_id) {
-  // EXERCISE C
-  /*
+// EXERCISE C
+/*
     1C- Build a query in Knex that returns the following data.
     The steps should be sorted by step_number, and the array
     should be empty if there are no steps for the scheme:
@@ -148,6 +147,14 @@ function findSteps(scheme_id) {
         }
       ]
   */
+async function findSteps(scheme_id) {
+  const result = await db("schemes as sc")
+    .leftJoin("steps as st", "sc.scheme_id", "st.scheme_id")
+    .select("sc.scheme_name", "st.step_id", "st.step_number", "st.instructions")
+    .where("sc.scheme_id", scheme_id)
+    .orderBy("st.step_number");
+  const steps = result[0].step_id ? result : [];
+  return steps;
 }
 
 function add(scheme) {
